@@ -5,10 +5,12 @@ namespace App\Providers\Filament;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
+use Illuminate\View\View;
 use Filament\PanelProvider;
 use Filament\Pages\Dashboard;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use App\Filament\Pages\Notifications;
 use App\Http\Middleware\VerifyIsAdmin;
@@ -38,6 +40,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->profile()
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn (): View => view('filament.footer'),
+            )
             ->colors([
                 'primary' => Color::Indigo,
             ])
