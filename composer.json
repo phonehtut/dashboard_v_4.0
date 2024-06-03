@@ -10,6 +10,8 @@
         "filament/notifications": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
+        "laravel/prompts": "^0.1.23",
+        "laravel/pulse": "^1.2",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8"
     },
@@ -64,6 +66,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "prefer-stable": true
 }

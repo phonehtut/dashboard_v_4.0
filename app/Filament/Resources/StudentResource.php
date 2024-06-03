@@ -31,6 +31,8 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $slug = 'students';
 
     public static function form(Form $form): Form

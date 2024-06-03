@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\SomeJob;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentChartController;
 
@@ -19,6 +20,10 @@ use App\Http\Controllers\StudentChartController;
 // });
 
 
-Route::get('/student-chart', [StudentChartController::class, 'index']);
+// Route::get('/student-chart', [StudentChartController::class, 'index']);
+
+Route::middleware(['auth', 'verified'])->get('/job', function () {
+    SomeJob::dispatch();
+});
 
 

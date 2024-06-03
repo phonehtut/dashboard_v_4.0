@@ -33,6 +33,8 @@ class BlogResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -78,6 +80,7 @@ class BlogResource extends Resource
                     ])
                 ])->columnSpan('full')
             ]);
+            return $form;
     }
 
     public static function table(Table $table): Table
@@ -108,6 +111,7 @@ class BlogResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+            return $table;
     }
 
     public static function getRelations(): array

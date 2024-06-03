@@ -8,12 +8,15 @@ use Filament\Widgets;
 use Illuminate\View\View;
 use Filament\PanelProvider;
 use Filament\Pages\Dashboard;
+use Filament\Facades\Filament;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use App\Filament\Pages\Notifications;
 use App\Http\Middleware\VerifyIsAdmin;
+use App\Filament\Widgets\StartOverview;
+use Filament\Navigation\NavigationItem;
 use Filament\Navigation\NavigationGroup;
 use Filament\Widgets\FilamentInfoWidget;
 use Filament\Http\Middleware\Authenticate;
@@ -28,6 +31,7 @@ use Filament\Notifications\Livewire\DatabaseNotifications;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
+// Ensure database notifications are triggered
 DatabaseNotifications::trigger('filament.notifications.database-notifications-trigger');
 
 class AdminPanelProvider extends PanelProvider
@@ -35,26 +39,26 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->globalSearch(true)
             ->default()
-            ->id('admin')
-            ->path('admin')
-            ->profile()
+            ->id('admin') // Set panel ID
+            ->path('admin') // Define panel path
+            ->profile() // Enable profile page
             ->renderHook(
                 PanelsRenderHook::BODY_END,
-                fn (): View => view('filament.footer'),
+                fn (): View => view('filament.footer'), // Add custom footer view
             )
             ->colors([
-                'primary' => Color::Indigo,
+                'primary' => Color::Indigo, // Set primary color
             ])
-            // ->topNavigation()
+            // ->navigation(false)
+            // Define user menu items
             ->userMenuItems([
                 MenuItem::make()
                     ->label('User Dashboard')
                     ->icon('heroicon-o-user-circle')
                     ->url('/'),
                 MenuItem::make()
-                    ->label('social Dashboard')
+                    ->label('Social Dashboard')
                     ->icon('heroicon-o-hand-thumb-up')
                     ->url('/social')
                     ->visible(fn():bool => auth()->user()->is_social_team),
@@ -63,26 +67,60 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-finger-print')
                     ->url('/teacher')
                     ->visible(fn():bool => auth()->user()->is_teacher),
+                MenuItem::make()
+                    ->label('Server Traffic')
+                    ->icon('heroicon-o-arrow-trending-up')
+                    ->url('/pulse')
             ])
+            // Define navigation groups
             ->navigationGroups([
                 NavigationGroup::make()
-                ->label('DemoGraphic Settings'),
-                NavigationGroup::make()
-                ->label('User Settings'),
-                NavigationGroup::make()
-                ->label('Invetory Settings')
-
+                    ->label('Course')
+                    ->collapsed(),
+                NavigationGroup::make('Social')
+                    ->label('Social')
+                    ->icon('heroicon-o-users')
+                    ->collapsed(),
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            // Define navigation items
+            ->navigationItems([
+                NavigationItem::make()
+                    ->label('Dashboard')
+                    ->url('/admin')
+                    ->icon('heroicon-o-home')
+                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.pages.dashboard')),
+                NavigationItem::make()
+                    ->label('Blog')
+                    ->url('/admin/blogs')
+                    ->group('Social')
+                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.blogs.*')),
+            ])
+            ->resources([
+                \App\Filament\Resources\UserResource::class,
+                \App\Filament\Resources\BlogResource::class,
+                \App\Filament\Resources\BatchResource::class,
+                \App\Filament\Resources\CategoryResource::class,
+                \App\Filament\Resources\CourseResource::class,
+                \App\Filament\Resources\GenderResource::class,
+                \App\Filament\Resources\OsResource::class,
+                \App\Filament\Resources\StudentResource::class,
+                // Add other resources here
+            ])
+            // Automatically discover resources
+            // ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            // Automatically discover pages
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            // Define custom pages
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets') // Uncomment to auto-discover widgets
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class, // Uncomment to include Filament info widget
+                StartOverview::class,
             ])
+            // Define middleware for the panel
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -95,9 +133,10 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 VerifyIsAdmin::class
             ])
+            // Enable database notifications
             ->databaseNotifications();
             // ->authMiddleware([
             //     Authenticate::class,
-            // ]);
+            // ]); // Uncomment to use custom auth middleware
     }
 }
