@@ -31,7 +31,7 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static bool $shouldRegisterNavigation = false;
+    // protected static bool $shouldRegisterNavigation = false;
 
     protected static ?string $slug = 'students';
 
@@ -64,7 +64,7 @@ class StudentResource extends Resource
                 FileUpload::make('photo')
                     ->label('Upload Photo')
                     ->disk('public')
-                    ->directory('photos')
+                    ->directory('studentPhotos')
                     ->maxSize(1024)
                     ->image()
                     ->required()

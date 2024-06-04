@@ -52,6 +52,8 @@ return [
 
         'postmark' => [
             'transport' => 'postmark',
+            'token' => env('POSTMARK_TOKEN'),
+            'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
             // 'message_stream_id' => null,
             // 'client' => [
             //     'timeout' => 5,
@@ -60,6 +62,8 @@ return [
 
         'mailgun' => [
             'transport' => 'mailgun',
+            'domain' => env('MAILGUN_DOMAIN'),
+            'secret' => env('MAILGUN_SECRET'),
             // 'client' => [
             //     'timeout' => 5,
             // ],

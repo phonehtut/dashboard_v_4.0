@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->string('photo');
             $table->string('name');
+            $table->string('course');
             $table->string('email');
             $table->string('subject')->nullable();
             $table->longText('message')->nullable();

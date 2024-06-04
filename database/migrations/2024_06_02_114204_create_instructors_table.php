@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('instructors', function (Blueprint $table) {
             $table->id();
+            $tabe->string('photo');
             $table->string('name');
+            $table->string('type');
             $table->string('email');
             $table->string('telegram');
             $table->string('facebook');

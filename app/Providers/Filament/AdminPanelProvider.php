@@ -74,40 +74,62 @@ class AdminPanelProvider extends PanelProvider
             ])
             // Define navigation groups
             ->navigationGroups([
-                NavigationGroup::make()
-                    ->label('Course')
+                NavigationGroup::make('Teacher')
+                    ->label('Teacher')
+                    ->icon('heroicon-o-users')
                     ->collapsed(),
                 NavigationGroup::make('Social')
-                    ->label('Social')
                     ->icon('heroicon-o-users')
+                    ->collapsed(),
+                NavigationGroup::make('Developemt')
+                    ->icon('heroicon-o-command-line')
                     ->collapsed(),
             ])
             // Define navigation items
+            // ->navigationItems([
+            //     NavigationItem::make()
+            //         ->label('Dashboard')
+            //         ->url('/admin')
+            //         ->icon('heroicon-o-home')
+            //         ->isActiveWhen(fn () => request()->routeIs('filament.admin.pages.dashboard')),
+            //     NavigationItem::make()
+            //         ->label('Students')
+            //         ->url('/admin/students')
+            //         ->group('Teacher')
+            //         ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.students.*')),
+            //     NavigationItem::make()
+            //         ->label('Blog')
+            //         ->url('/admin/blogs')
+            //         ->group('Social')
+            //         ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.blogs.*')),
+            //     NavigationItem::make()
+            //         ->label('Review')
+            //         ->group('Social')
+            //         ->url('#'),
+            // ])
+            // ->resources([
+            //     \App\Filament\Resources\UserResource::class,
+            //     \App\Filament\Resources\BlogResource::class,
+            //     \App\Filament\Resources\BatchResource::class,
+            //     \App\Filament\Resources\CategoryResource::class,
+            //     \App\Filament\Resources\CourseResource::class,
+            //     \App\Filament\Resources\GenderResource::class,
+            //     \App\Filament\Resources\OsResource::class,
+            //     \App\Filament\Resources\StudentResource::class,
+            //     // Add other resources here
+            // ])
             ->navigationItems([
                 NavigationItem::make()
-                    ->label('Dashboard')
-                    ->url('/admin')
-                    ->icon('heroicon-o-home')
-                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.pages.dashboard')),
-                NavigationItem::make()
-                    ->label('Blog')
-                    ->url('/admin/blogs')
-                    ->group('Social')
-                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.blogs.*')),
+                ->label('Developemt Monitoring')
+                ->url('/telescope', shouldOpenInNewTab: true)
+                ->group('Development'),
+            NavigationItem::make()
+                ->label('Server Monitoring')
+                ->url('/pulse', shouldOpenInNewTab: true)
+                ->group('Development'),
             ])
-            ->resources([
-                \App\Filament\Resources\UserResource::class,
-                \App\Filament\Resources\BlogResource::class,
-                \App\Filament\Resources\BatchResource::class,
-                \App\Filament\Resources\CategoryResource::class,
-                \App\Filament\Resources\CourseResource::class,
-                \App\Filament\Resources\GenderResource::class,
-                \App\Filament\Resources\OsResource::class,
-                \App\Filament\Resources\StudentResource::class,
-                // Add other resources here
-            ])
-            // Automatically discover resources
-            // ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            //Automatically discover resources
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             // Automatically discover pages
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             // Define custom pages
@@ -117,7 +139,7 @@ class AdminPanelProvider extends PanelProvider
             // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets') // Uncomment to auto-discover widgets
             ->widgets([
                 Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class, // Uncomment to include Filament info widget
+                Widgets\FilamentInfoWidget::class, // Uncomment to include Filament info widget
                 StartOverview::class,
             ])
             // Define middleware for the panel

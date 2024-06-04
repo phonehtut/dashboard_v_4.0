@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Review;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -18,7 +19,12 @@ class StartOverview extends BaseWidget
                 ->description('This is Student Count')
                 ->descriptionIcon('heroicon-o-arrow-trending-up')
                 ->color('success')
-                ->chart($chartData)
+                ->chart($chartData),
+            Stat::make('Total Review', Review::count())
+                ->color('primary')
+                ->description('This is Review Count')
+                ->descriptionIcon('heroicon-o-arrow-trending-up')
+                ->chart([7,3,4,5,6,3,4])
         ];
     }
 
